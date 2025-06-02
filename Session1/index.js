@@ -22,6 +22,7 @@ const server = http.createServer((req, res) => {
     } else if (url === "/contacts") {
         res.end("88s8s83384 thakurutkarsh2@gmail.com ")
     } else if (url === "/fitness") {
+        const abc = () => {}
         const fitness = {
             name: "utkarsh",
             height: 173,
@@ -33,6 +34,7 @@ const server = http.createServer((req, res) => {
             },
             shouldSleep8Hours: true,
             createdDate: new Date().toISOString(),
+            abc,
         }
         res.writeHead(200, { "content-type": "application/json" });
         res.end(JSON.stringify(fitness));
