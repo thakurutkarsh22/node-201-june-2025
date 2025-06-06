@@ -1,19 +1,17 @@
 const express = require("express");
-const { homeResponse } = require("./Controllers/HomeController");
-const userData = require("./usersData");
+const dotenv = require('dotenv')
+dotenv.config() // this command will load all the variables inside .env file in process.env
+// process is a global vaiable 
+const UserActivityRouter = require("./Routes/UserActivityRoute");
+const HomeRouter = require("./Routes/HomeRoute");
+const { Authorize } = require("./Middlewares/Authorization");
 const server = express();
-const PORT = 8089;
+const PORT = process.env.PORT;
 
 
-server.get("/", homeResponse)
+server.use("/", HomeRouter)
 
-server.get("/home", homeResponse)
-
-server.get("/contacts", (req, res) => {
-    res.status(200).send("88s8s83384 thakurutkarsh2@gmail.com")
-})
-
-server.get("/fitness", (req, res) => {
+server.get("/fitness", Authorize, (req, res, next) => {
     const fitness = {
             name: "utkarsh",
             height: 173,
@@ -32,57 +30,20 @@ server.get("/fitness", (req, res) => {
 })
 
 
-// REAL API 
-// 1. get all users 
-
-server.get("/api/v1/users/getAllUsers", (req, res) => {
-    const personsData = userData.data;
-    const payload = {
-        data: personsData,
-        count: personsData.length
-    }
-    res.status(200).json(payload);
-} )
-
-// 2. get all female users 
-// query params example : https://www.google.com/search?q=sachin&key=value  q=virat 
-// SUBMISSION OF FORMS for this this should not be used
-
-server.get("/api/v1/users/search", (req, res) => {
-    const query = req.query;
-    const searchedGender = query.gender; // female
-
-    const filteredData = userData.data.filter(person => person.gender === searchedGender );
-
-    const payload = {
-        data: filteredData,
-        count: filteredData.length
-    }
-    res.json(payload);
-})
-
-// 3. get detail about a user 
-// way 1. we can use query params like above 
-// way 2. we will be using params 
-
-server.get("/api/v1/users/:username/", (req, res) => {
-    const params = req.params;
-    const searchedName = params.username;
-
-    const filteredData = userData.data.filter(person => person.name.first === searchedName );
-
-    const payload = {
-        data: filteredData,
-        count: filteredData.length
-    }
-    res.json(payload);
-})
-
-
-
+// use can handel all the request (GET PUT POST DELETE)
+server.use("/api/v1/users", UserActivityRouter)
 
 
 server.listen(PORT, () => {
     console.log("THUMBS UP server has started and listning at port EXPRESS JS", PORT)
 })
 
+// every request will 1st come to index.js and will go from top to bottom.
+
+
+/**
+ * Controllers: Request handlers
+ * Middlewares: Special Request handlers (any repetitive code in controller can come to middleware )
+ */
+
+// right now for the sake of class code we are sending the .env file to github but in real life we do not perform this stunt
