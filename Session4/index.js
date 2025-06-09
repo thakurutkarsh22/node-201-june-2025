@@ -5,6 +5,7 @@ dotenv.config() // this command will load all the variables inside .env file in 
 const UserActivityRouter = require("./Routes/UserActivityRoute");
 const HomeRouter = require("./Routes/HomeRoute");
 const { Authorize } = require("./Middlewares/Authorization");
+const { default: mongoose } = require("mongoose");
 const server = express();
 const PORT = process.env.PORT;
 
@@ -34,16 +35,14 @@ server.get("/fitness", Authorize, (req, res, next) => {
 server.use("/api/v1/users", UserActivityRouter)
 
 
+
+// database connection 
+const databaseUrl = process.env.DB_URL + ":" + process.env.DB_PORT;
+mongoose.connect(databaseUrl).then(() => console.log("thumbs up db is up")).catch((error) => {
+    console.log(error);
+})
+
 server.listen(PORT, () => {
     console.log("THUMBS UP server has started and listning at port EXPRESS JS", PORT)
 })
 
-// every request will 1st come to index.js and will go from top to bottom.
-
-
-/**
- * Controllers: Request handlers
- * Middlewares: Special Request handlers (any repetitive code in controller can come to middleware )
- */
-
-// right now for the sake of class code we are sending the .env file to github but in real life we do not perform this stunt
