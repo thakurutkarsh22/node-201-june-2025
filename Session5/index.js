@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 dotenv.config() // this command will load all the variables inside .env file in process.env
 // process is a global vaiable 
 const UserActivityRouter = require("./Routes/UserActivityRoute");
+const BlogRouter = require("./Routes/BlogsRoute");
 const HomeRouter = require("./Routes/HomeRoute");
 const { Authorize } = require("./Middlewares/Authorization");
 const { default: mongoose } = require("mongoose");
@@ -10,7 +11,17 @@ const server = express();
 const PORT = process.env.PORT;
 
 
+
+// this middleware will parse EVERY REQUEST 
+// express.json() -> body paser (Middleware)
+// here in this we are not using any path, it means for every request this line will work
+server.use( express.json() ); 
+
+
+
 server.use("/", HomeRouter)
+
+
 
 server.get("/fitness", Authorize, (req, res, next) => {
     const fitness = {
@@ -31,13 +42,15 @@ server.get("/fitness", Authorize, (req, res, next) => {
 })
 
 
-// use can handel all the request (GET PUT POST DELETE)
+
 server.use("/api/v1/users", UserActivityRouter)
+
+server.use("/api/v1/blogs", BlogRouter)
 
 
 
 // database connection 
-const databaseUrl = process.env.DB_URL + ":" + process.env.DB_PORT;
+const databaseUrl = process.env.DB_URL + ":" + process.env.DB_PORT + "/Criojune2025";
 mongoose.connect(databaseUrl).then(() => console.log("thumbs up db is up")).catch((error) => {
     console.log(error);
 })
