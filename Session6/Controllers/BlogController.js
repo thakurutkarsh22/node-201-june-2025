@@ -1,22 +1,14 @@
 const BlogModel = require("../Models/Blogs.model");
+const { createBlogService } = require("../Services/BlogService");
 
 async function createBlog(req, res, next) {
     const body = req.body;
     const title = body.title;
     const content = body.content;
 
-    // save this input to the the DB 
-    // obj is created 
-    const blogsObj = BlogModel({
-        title,
-        content
-    })
-
-
-    // save the obj
 
     try {
-        const response = await blogsObj.save()
+        const response = await createBlogService(title,content );
         res.status(201).json(response);
     } catch(error) {
         res.status(500).json(error);
