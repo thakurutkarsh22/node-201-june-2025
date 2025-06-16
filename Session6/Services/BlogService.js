@@ -10,9 +10,14 @@ class BlogService {
         })
 
         try {
+            // log
+            console.log("bofore createBlogService", title, content)
             const response = await blogsObj.save()
+            console.log("after createBlogService save", response)
+
             return response;
         } catch(error) {
+            // log 
             return error;
         }
     }
