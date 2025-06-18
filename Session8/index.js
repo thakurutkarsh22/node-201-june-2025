@@ -5,6 +5,7 @@ dotenv.config() // this command will load all the variables inside .env file in 
 const UserActivityRouter = require("./Routes/UserActivityRoute");
 const BlogRouter = require("./Routes/BlogsRoute");
 const HomeRouter = require("./Routes/HomeRoute");
+const AuthRouter = require("./Routes/AuthRoute");
 const { Authorize } = require("./Middlewares/Authorization");
 const { default: mongoose } = require("mongoose");
 const server = express();
@@ -46,6 +47,9 @@ server.get("/fitness", Authorize, (req, res, next) => {
 server.use("/api/v1/users", UserActivityRouter)
 
 server.use("/api/v1/blogs", BlogRouter)
+
+// auth route which will help me in register / login
+server.use("/api/v1/auth", AuthRouter);
 
 
 

@@ -2,9 +2,9 @@ const Joi = require("joi");
 
 const BlogInputSchema = Joi.object().keys({
     title: Joi.string().min(3).max(100).required(),
-    content: Joi.string().min(10).max(1000).required(),
+}).keys({
+   content: Joi.string().min(10).max(1000).required()
 });
-
 
 function isBlogValid(userInput) {
     /**
