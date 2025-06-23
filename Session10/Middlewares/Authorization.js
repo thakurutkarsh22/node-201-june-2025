@@ -26,3 +26,10 @@ function Authorize(req, res, next) {
 }
 
 module.exports = {Authorize, JWT_KEY}
+
+// JWT PASSWORD BASED AUTHENTICATION 
+
+
+// fucntion googleLogin(reqm res) {
+
+// }

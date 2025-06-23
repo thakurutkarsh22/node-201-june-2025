@@ -6,9 +6,14 @@ const { Authorize } = require("../Middlewares/Authorization");
 const router = express.Router();
 
 
+const passport = require("passport");
+// 
+const PassportAuthMiddleware = passport.authenticate("jwt", { session: false, failureRedirect: "/login" })
+
+
 router.post("/newBlog", BlogValidationMiddleware, createBlog)
 router.delete("/delete/:id", deleteBlogById)
-router.get("/getAllBlogs", Authorize, getAllBlogs)
+router.get("/getAllBlogs", PassportAuthMiddleware, getAllBlogs)
 router.get("/getBlog/:id", getBlogById)
 
 

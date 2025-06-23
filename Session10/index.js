@@ -11,12 +11,20 @@ const { default: mongoose } = require("mongoose");
 const server = express();
 const PORT = process.env.PORT;
 
-var cors = require('cors')
+const configurePassport = require("./ConfigPassport/passport");
+const passport = require("passport");
+
+var cors = require('cors');
+
 server.use(cors()) // every request will be allowdd through this (CROtatus
 // SS ORIGIN request)
 
 
 server.use( express.json() ); 
+
+
+// TODO: 
+configurePassport(passport);
 
 
 
